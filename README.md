@@ -7,4 +7,4 @@
 
 ### How to run GroupingTweets.py
 * The file path for reading in the Tweets will need to be changed
-* Code has added functionality of writing clusters to a file which can be uncommented if you do not want to do this
+* The code has added functionality of writing clusters to a file which can be uncommented if you do not want to do this
