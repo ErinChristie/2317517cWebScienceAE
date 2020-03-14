@@ -43,34 +43,31 @@ class StdOutListener(StreamListener):
             created = datetime.datetime.strptime(created_at, '%a %b %d %H:%M:%S +0000 %Y')
             
             # Initialise the REST API
-            # Write to file the followers of each user
-            # Write the followers of each user to the file "followers.txt"
-            list_of_followers = []
+            # Get the followers of each user
+            followers_list = []
 
-            file = open("followers.txt","a+")
             current_cursor = tweepy.Cursor(api.followers_ids, screen_name=username, count=10)
             current_followers = current_cursor.iterator.next()
-            list_of_followers.extend(current_followers)
+            followers_list.extend(current_followers)
             next_cursor_id = current_cursor.iterator.next_cursor
 
             while(next_cursor_id!=0):
                 current_cursor = tweepy.Cursor(self.api.followers_ids, screen_name=username, count=10,cursor=next_cursor_id)
                 current_followers=current_cursor.iterator.next()
-                list_of_followers.extend(current_followers)
+                followers_list.extend(current_followers)
                 next_cursor_id = current_cursor.iterator.next_cursor
                
-            file.write(list_of_followers)
-            file.close()  
+            #print(followers_list)
+
             # Put all data collected for a single Tweet into a variable
             tweet_data = {'id':tweet_id, 'username':username, 'followers':followers, 'text':text, 'hashtags':hashtags, 'language':language, 'created':created}
 
             # Store the varibale tweet_data into the database 
             collection.save(tweet_data)
 
-             # Get the full list of followers of a particular user
-            list_of_followers=[]
+            # Get the full list of followers of a particular user
+            list_of_followers = []
 
-            file = open("user_followers.txt","w")
             current_cursor = tweepy.Cursor(api.followers_ids, screen_name="DailyMirror", count=5000)
             current_followers = current_cursor.iterator.next()
             list_of_followers.extend(current_followers)
@@ -81,12 +78,11 @@ class StdOutListener(StreamListener):
                 current_followers=current_cursor.iterator.next()
                 list_of_followers.extend(current_followers)
                 next_cursor_id = current_cursor.iterator.next_cursor
-                #file.write(list_of_followers)
 
         except:
             print(tweet)
 
-        file.write(list_of_followers)
+        #print(list_of_followers)
 
     # Prints error status if an error occurs 
     def on_error(self, status):
